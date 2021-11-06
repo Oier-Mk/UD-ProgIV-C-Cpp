@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+/**
+ *
+ * CIERRA EL FICHERO EN EL QUE GUARDAMOS TODOS LOS DATOS
+ *
+ * @PARAM f FICHERO EN EL QUE SE GUARDAN LOS FICHEROS
+ *
+ */
+void cerrarFichero(FILE *f) {
+    fclose(f);
+}
+/**
+ *
+ * ABRE EL FICHERO EN EL QUE GUARDAMOS TODOS LOS DATOS
+ *
+ * @PARAM i ELECCION DEL MODO EN EL QUE SE GUARDAN LOS FICHEROS
+ * i = 0 ESCRITURA W
+ * i = 1 LECTURA R
+ * i = 2 ESCRITURA CONCATENADA A 
+ *
+ * @RETURN FICHERO DONDE SE ENCUENTRAN LOS DATOS ALMACENADOS
+ *
+ */
+FILE* abrirFichero(int i) {
+    FILE *f;
+    if (i == 0) {
+        f = fopen("prueba.txt", "w"); //ESCRITURA W
+    }
+    if (i == 1) {
+        f = fopen("prueba.txt", "r"); //LECTURA
+    }
+    if (i == 2) {
+        f = fopen("prueba.txt", "a"); //ESCRITURA CONCATENADA A
+    }
+    return f;
+}
+/**
+ *
+ * CUENTA LAS LINEAS QUE HAY EN EL FICHERO, POR ENDE, CUENTA LA CANTIDAD DE FORMULARIOS GUARDADOS
+ *
+ * @RETURN ENTERO CON LA CANTIDAD DE FORMULARIOS
+ *
+ */
+int countLines() {
+    FILE *f = abrirFichero(1);
+    char c;
+    int i = 1;
+    while ((c = fgetc(f)) != EOF) {
+        if (c == '\n')
+            i++;
+    }
+    cerrarFichero(f);
+    return i;
+}
+/**
+ *
+ * CONCATENA DOS DIGITOS
+ *
+ * @PARAM x PRIMER NUMERO A CONCATENAR
+ * @PARAM y SEGUNDO NUMERO A CONCATENAR
+ * @RETURN LOS DOS NUMEROS CONCATENADOR
+ */
+int concatInt(int x, int y) {
+    int pow = 10;
+    while (y >= pow)
+        pow *= 10;
+    return x * pow + y;
+}
+
+/**
+ *
+ * COMPARA DOS CADENAS DE CARACTERES
+ *
+ * @PARAM c1 CADENA 1 A COMPARAR
+ * @PARAM c2 CADENA 2 A COMPARAR
+ * @RETURN 1 SI ES CORRECTO, 0 SI ES IGUAL
+ *
+ */
+int compare(char *c1, char *c2) {
+    return strcmp(c1, c2);
+}
+
+/**
+ *
+ * RECIBE UN NUMERO POR CONSOLA
+ *
+ * @PARAM size CANTIDAD DE DIGITOS DEL NUMERO
+ * @RETURN NUMERO RECIBIDO POR CONSOLA
+ *
+ */
+int inputNumero(int size) { //INTRODUCE UN NUMERO MAYOR QUE 0
+    fflush(stdin);
+    int num;
+    size++;
+    char str[size];
+    fgets(str, size, stdin);
+    sscanf(str, "%i", &num);
+    return num;
+}
+
+/**
+ *
+ * RECIBE UN STRING POR CONSOLA
+ *
+ * @PARAM size CANTIDAD DE DIGITOS DEL STRING
+ * @RETURN STRING RECIBIDO POR CONSOLA
+ *
+ */
+char *inputString(int size) {
+    fflush(stdin);
+    char *str = malloc(sizeof(char) * (size + 1));
+    fgets(str, size, stdin);
+    sscanf(str, "%[^\n]", str);
+    return str;
+}
